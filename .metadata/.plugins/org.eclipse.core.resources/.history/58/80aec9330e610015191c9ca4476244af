@@ -1,0 +1,26 @@
+import java.util.Scanner;
+public class main {
+
+	public static void main(String[] args) {
+		Scanner in = new Scanner(System.in);
+		int a = in.nextInt();
+		int b = in.nextInt();
+		int c = in.nextInt();
+		int d=0;
+		if (a > b && a > c) d=a;
+		if (b > a && b > c) d=b;
+		if (c > a && c > b) d=c;
+		if (a==b && a!=c) d=a;
+		if (c==b && c!=a) d=b;
+		if (a==c && a!=b) d=c;
+		if (a==c && a==b && b==c) d=c;
+			System.out.println(d);
+		
+		
+		
+		
+		// TODO Auto-generated method stub
+
+	}
+
+}

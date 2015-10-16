@@ -1,0 +1,31 @@
+import java.util.Scanner;
+
+public class RosIPRB {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner scan = new Scanner(System.in);
+		
+		int num_AA, num_Aa, num_aa;
+		num_AA = scan.nextInt();
+		num_Aa = scan.nextInt();
+		num_aa = scan.nextInt();
+		
+		long population;
+		population = num_AA+num_Aa+num_aa;
+		
+		double pAA = num_AA / population;
+		double pAAAa = (num_Aa / population) * (num_AA / (population-1));
+		double pAaAa = (num_Aa / population) * ((num_Aa - 1.0) / (population-1)) * 0.75;
+		double pAaaa = (num_Aa / population) * (num_aa/(population - 1)) * 0.5;
+		
+		double paaAA = (num_aa / population) * (num_AA / (population - 1));
+		double paaAa = (num_aa / population) * (num_Aa / (population - 1));
+		
+		double res = pAA + pAAAa + pAaAa + pAaaa + paaAA + paaAa;
+		
+		System.out.printf("%.5f", res);
+
+	}
+
+}
