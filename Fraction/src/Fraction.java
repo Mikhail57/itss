@@ -42,7 +42,7 @@ public class Fraction {
 
     public Fraction Divide(Fraction x)
     {
-        return new Fraction(n/x.d, d/x.n);
+        return new Fraction(n*x.d, d*x.n);
     }
 
     public Fraction Add(Fraction x){
