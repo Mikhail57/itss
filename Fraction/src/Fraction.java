@@ -27,7 +27,7 @@ public class Fraction {
         if (n<0) tempN = -n;
         if (d<0) tempD = -d;
         int GCD = gcd(tempN, tempD);
-        return new Fraction((n/GCD), (d/GCD));
+        return new Fraction((n/GCD), (d/GCD)).RightFormat();
     }
 
     public String toString()
@@ -37,15 +37,15 @@ public class Fraction {
 
     public Fraction Multiply(Fraction x)
     {
-        return new Fraction(n*x.n, d*x.d);
+        return new Fraction(n*x.n, d*x.d).Simplify();
     }
 
     public Fraction Divide(Fraction x)
     {
-        return new Fraction(n*x.d, d*x.n);
+        return new Fraction(n*x.d, d*x.n).Simplify();
     }
     public Fraction Abs(){
-        return new Fraction(Math.abs(n), Math.abs(d));
+        return new Fraction(Math.abs(n), Math.abs(d)).Simplify();
     }
 
 
@@ -56,7 +56,7 @@ public class Fraction {
             tempN *= -1;
             tempD *= -1;
         }
-        return new Fraction(tempN, tempD);
+        return new Fraction(tempN, tempD).Simplify();
     }
 
     public Fraction Add(Fraction x){
@@ -122,7 +122,10 @@ public class Fraction {
     }
 
     private int lcm(int a, int b){
-        int GCD = gcd(a, b);
-        return Math.abs(a*b)/(GCD);
+        int tempA=a, tempB=b;
+        if (tempA<0) tempA *= -1;
+        if (tempB<0) tempB *= -1;
+        int GCD = gcd(tempA, tempB);
+        return Math.abs(tempA*tempB)/(GCD);
     }
 }
