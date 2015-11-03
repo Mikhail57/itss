@@ -44,6 +44,20 @@ public class Fraction {
     {
         return new Fraction(n*x.d, d*x.n);
     }
+    public Fraction Abs(){
+        return new Fraction(Math.abs(n), Math.abs(d));
+    }
+
+
+    public Fraction RightFormat(){
+        int tempN = n;
+        int tempD = d;
+        if (tempD<0){
+            tempN *= -1;
+            tempD *= -1;
+        }
+        return new Fraction(tempN, tempD);
+    }
 
     public Fraction Add(Fraction x){
         int LCM = lcm(d, x.getDen());
@@ -64,6 +78,12 @@ public class Fraction {
         temp = temp.Simplify();
 
         return temp;
+    }
+    public boolean equals(Fraction frac) {
+        Fraction temp1 = frac.Simplify().RightFormat();
+        Fraction temp2 = new Fraction(n, d);
+        temp2 = temp2.Simplify().RightFormat();
+        return (temp1.getNum()==temp2.getNum() && temp1.getDen()==temp2.getDen());
     }
 
 

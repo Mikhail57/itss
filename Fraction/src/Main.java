@@ -14,8 +14,7 @@ public class Main {
         Fraction sample1 = new Fraction(first1, second1);
         Fraction sample2 = new Fraction(first2, second2);
 
-
-        sample1 = sample1.Sub(sample2);
+        sample1 = sample1.Add(sample2);
 
         System.out.println(sample1.toString());
     }
