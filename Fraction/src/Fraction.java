@@ -85,6 +85,14 @@ public class Fraction {
         temp2 = temp2.Simplify().RightFormat();
         return (temp1.getNum()==temp2.getNum() && temp1.getDen()==temp2.getDen());
     }
+    public void fromString(String strFrac) {
+        int separator = -1;
+        if (!(strFrac.contains("/")||strFrac.contains("\\"))){
+            strFrac.replace('\\', '/');
+            separator = strFrac.indexOf("/");
+            System.out
+        }
+    }
 
 
     private int gcd(int m, int n){
