@@ -17,6 +17,10 @@ public class ButtonAdapter extends BaseAdapter {
 
     private int rows, cols;
 
+    private int[] hideTextArray;
+
+    Button Buttons[];
+
     // Gets the context so it can be used later
     public ButtonAdapter(Context c, int rows, int cols) {
         mContext = c;
@@ -26,6 +30,11 @@ public class ButtonAdapter extends BaseAdapter {
         }
         this.rows = rows;
         this.cols = cols;
+        Buttons = new Button[rows*cols];
+    }
+
+    public void setButtonsHideText(int[] array) {
+        hideTextArray = array.clone();
     }
 
     // Total number of things contained within the adapter
@@ -57,8 +66,10 @@ public class ButtonAdapter extends BaseAdapter {
             }
             square -= 2;
             btn.setLayoutParams(new GridView.LayoutParams(square, square));
-            Log.i("Lololo", "Recalculating params");
             btn.setPadding(8, 8, 8, 8);
+
+            btn.setOnClickListener(new MyOnClickListener(position));
+            Buttons[position] = btn;
         }
         else {
             btn = (Button) convertView;
@@ -70,5 +81,21 @@ public class ButtonAdapter extends BaseAdapter {
         btn.setId(position);
 
         return btn;
+    }
+
+
+    class MyOnClickListener implements View.OnClickListener
+    {
+        private final int position;
+
+        public MyOnClickListener(int position)
+        {
+            this.position = position;
+        }
+
+        public void onClick(View v)
+        {
+            Buttons[position].setText(Integer.toString(hideTextArray[position]));
+        }
     }
 }

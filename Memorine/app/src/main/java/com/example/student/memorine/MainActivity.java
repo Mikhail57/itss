@@ -32,9 +32,8 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        GridView gridView = (GridView)findViewById(R.id.memorinArea);
-        gridView.setAdapter(new ButtonAdapter(this, 4, 4));
-
+        MemorineArea game = new MemorineArea(this, (GridView)findViewById(R.id.memorinArea), 4, 4);
+        game.startGame();
     }
 
 
