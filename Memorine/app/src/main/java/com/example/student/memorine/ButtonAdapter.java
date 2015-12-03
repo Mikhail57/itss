@@ -34,6 +34,15 @@ public class ButtonAdapter extends BaseAdapter {
         this.rows = rows;
         this.cols = cols;
         Buttons = new ArrayList<Button>();
+
+
+        for (int i=0; i<rows*cols; i++) {
+            Button btn = new Button(mContext);
+            btn.setPadding(8, 8, 8, 8);
+
+            btn.setOnClickListener(new MyOnClickListener(i));
+            Buttons.add(btn);
+        }
     }
 
     public void setButtonsHideText(int[] array) {
@@ -76,45 +85,13 @@ public class ButtonAdapter extends BaseAdapter {
                 square = parent.getHeight()/rows;
             }
             square -= 2;
-            btn.setLayoutParams(new GridView.LayoutParams(square, square));
-            btn.setPadding(8, 8, 8, 8);
+            Buttons.get(position).setLayoutParams(new GridView.LayoutParams(square, square));
 
-            btn.setOnClickListener(new MyOnClickListener(position));
-            Buttons.add(position, btn);
+            btn = Buttons.get(position);
         }
         else {
             btn = (Button) convertView;
-
-            if (position == 0) {
-                if (Buttons.get(0).getLayoutParams().width < 5) {
-                    int square = parent.getWidth()/cols;
-                    if (square > parent.getHeight()/rows){
-                        square = parent.getHeight()/rows;
-                    }
-                    square -= 2;
-                    Buttons.get(0).setLayoutParams(new GridView.LayoutParams(square, square));
-                    Buttons.get(0).setPadding(8, 8, 8, 8);
-                    Buttons.get(0).setOnClickListener(new MyOnClickListener(0));
-                }
-            }
         }
-
-
-        /*if (convertView == null && position == 0) {
-            btn = new Button(mContext);
-            int square = parent.getWidth()/cols;
-            if (square > parent.getHeight()/rows){
-                square = parent.getHeight()/rows;
-            }
-            square -= 2;
-            btn.setLayoutParams(new GridView.LayoutParams(square, square));
-            btn.setPadding(8, 8, 8, 8);
-
-            Log.e("Lololo", "Zero position");
-
-            btn.setOnClickListener(new MyOnClickListener(position));
-            Buttons.add(position, btn);
-        }*/
 
         Log.e("Lololo", "position="+position+"; length="+buttons.length);
         btn.setText(buttons[position]);
@@ -141,7 +118,8 @@ public class ButtonAdapter extends BaseAdapter {
 
         public void onClick(View v)
         {
-            Buttons.get(v.getId()+1).setText(Integer.toString(hideTextArray[v.getId()]));
+            Log.i("Lol", "id="+v.getId());
+            Buttons.get(v.getId()).setText(Integer.toString(hideTextArray[v.getId()]));
         }
     }
 }
