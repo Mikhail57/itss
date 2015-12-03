@@ -14,6 +14,8 @@ public class MemorineArea {
 
     public MemorineArea(Context mContext, GridView area) {
         this.area = area;
+        this.cols = 4;
+        this.rows = 4;
         this.mContext = mContext;
     }
 

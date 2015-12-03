@@ -9,6 +9,9 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ButtonAdapter extends BaseAdapter {
 
     public String[] buttons;
@@ -19,7 +22,7 @@ public class ButtonAdapter extends BaseAdapter {
 
     private int[] hideTextArray;
 
-    Button Buttons[];
+    List<Button> Buttons;
 
     // Gets the context so it can be used later
     public ButtonAdapter(Context c, int rows, int cols) {
@@ -30,7 +33,7 @@ public class ButtonAdapter extends BaseAdapter {
         }
         this.rows = rows;
         this.cols = cols;
-        Buttons = new Button[rows*cols];
+        Buttons = new ArrayList<Button>();
     }
 
     public void setButtonsHideText(int[] array) {
@@ -54,6 +57,14 @@ public class ButtonAdapter extends BaseAdapter {
         return position;
     }
 
+    public int getRowsCount() {
+        return rows;
+    }
+
+    public int getColsCount() {
+        return cols;
+    }
+
     public View getView(int position,
                         View convertView, ViewGroup parent) {
         Button btn;
@@ -69,18 +80,53 @@ public class ButtonAdapter extends BaseAdapter {
             btn.setPadding(8, 8, 8, 8);
 
             btn.setOnClickListener(new MyOnClickListener(position));
-            Buttons[position] = btn;
+            Buttons.add(position, btn);
         }
         else {
             btn = (Button) convertView;
+
+            if (position == 0) {
+                if (Buttons.get(0).getLayoutParams().width < 5) {
+                    int square = parent.getWidth()/cols;
+                    if (square > parent.getHeight()/rows){
+                        square = parent.getHeight()/rows;
+                    }
+                    square -= 2;
+                    Buttons.get(0).setLayoutParams(new GridView.LayoutParams(square, square));
+                    Buttons.get(0).setPadding(8, 8, 8, 8);
+                    Buttons.get(0).setOnClickListener(new MyOnClickListener(0));
+                }
+            }
         }
+
+
+        /*if (convertView == null && position == 0) {
+            btn = new Button(mContext);
+            int square = parent.getWidth()/cols;
+            if (square > parent.getHeight()/rows){
+                square = parent.getHeight()/rows;
+            }
+            square -= 2;
+            btn.setLayoutParams(new GridView.LayoutParams(square, square));
+            btn.setPadding(8, 8, 8, 8);
+
+            Log.e("Lololo", "Zero position");
+
+            btn.setOnClickListener(new MyOnClickListener(position));
+            Buttons.add(position, btn);
+        }*/
+
+        Log.e("Lololo", "position="+position+"; length="+buttons.length);
         btn.setText(buttons[position]);
         // filenames is an array of strings
         btn.setTextColor(Color.WHITE);
         btn.setBackgroundResource(R.drawable.card_back);
         btn.setId(position);
 
-        return btn;
+        if (position<Buttons.size()) {
+            return Buttons.get(position);
+        }
+        return null;
     }
 
 
@@ -95,7 +141,7 @@ public class ButtonAdapter extends BaseAdapter {
 
         public void onClick(View v)
         {
-            Buttons[position].setText(Integer.toString(hideTextArray[position]));
+            Buttons.get(v.getId()+1).setText(Integer.toString(hideTextArray[v.getId()]));
         }
     }
 }
