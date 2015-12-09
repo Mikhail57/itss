@@ -2,6 +2,7 @@ package com.example.student.memorine;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ public class ButtonAdapter extends BaseAdapter {
     private int rows, cols;
 
     private int[] hideTextArray;
+    private boolean[] hasBeenClicked;
 
     List<Button> Buttons;
 
@@ -28,19 +30,22 @@ public class ButtonAdapter extends BaseAdapter {
     public ButtonAdapter(Context c, int rows, int cols) {
         mContext = c;
         buttons = new String[rows*cols];
+        hasBeenClicked = new boolean[rows*cols];
         for (int i=0; i<rows*cols; i++) {
             buttons[i] = "?";
+            hasBeenClicked[i] = false;
         }
         this.rows = rows;
         this.cols = cols;
-        Buttons = new ArrayList<Button>();
+        Buttons = new ArrayList<>();
+        MyOnClickListener onClickListener = new MyOnClickListener();
 
 
         for (int i=0; i<rows*cols; i++) {
             Button btn = new Button(mContext);
             btn.setPadding(8, 8, 8, 8);
 
-            btn.setOnClickListener(new MyOnClickListener(i));
+            btn.setOnClickListener(onClickListener);
             Buttons.add(btn);
         }
     }
@@ -79,7 +84,6 @@ public class ButtonAdapter extends BaseAdapter {
         Button btn;
         if (convertView == null) {
             // if it's not recycled, initialize some attributes
-            btn = new Button(mContext);
             int square = parent.getWidth()/cols;
             if (square > parent.getHeight()/rows){
                 square = parent.getHeight()/rows;
@@ -93,33 +97,66 @@ public class ButtonAdapter extends BaseAdapter {
             btn = (Button) convertView;
         }
 
-        Log.e("Lololo", "position="+position+"; length="+buttons.length);
+//        Log.e("Lololo", "position="+position+"; length="+buttons.length);
         btn.setText(buttons[position]);
-        // filenames is an array of strings
         btn.setTextColor(Color.WHITE);
         btn.setBackgroundResource(R.drawable.card_back);
         btn.setId(position);
 
-        if (position<Buttons.size()) {
-            return Buttons.get(position);
+        if (hasBeenClicked[btn.getId()]) {
+            btn.setText(Integer.toString(hideTextArray[btn.getId()]));
         }
-        return null;
+
+        /*if (position<Buttons.size()) {
+            return Buttons.get(position);
+        }*/
+        return btn;
     }
 
 
     class MyOnClickListener implements View.OnClickListener
     {
-        private final int position;
-
-        public MyOnClickListener(int position)
-        {
-            this.position = position;
-        }
+        int lastClickedButtonId = -1;
+        int currentClickedButtonId = -1;
 
         public void onClick(View v)
         {
-            Log.i("Lol", "id="+v.getId());
-            Buttons.get(v.getId()).setText(Integer.toString(hideTextArray[v.getId()]));
+            currentClickedButtonId = v.getId();
+            Log.e("onClick", "Method has been called. lastClickedButton"+lastClickedButtonId+"; currentClickedButton="+currentClickedButtonId);
+
+            Buttons.get(currentClickedButtonId).setText(Integer.toString(hideTextArray[currentClickedButtonId]));
+
+            if (lastClickedButtonId >=0) {
+                if ((currentClickedButtonId != lastClickedButtonId) && (!hasBeenClicked[currentClickedButtonId])) {
+                    if (hideTextArray[currentClickedButtonId] != hideTextArray[lastClickedButtonId]) {
+
+                        Handler handler = new Handler();
+                        final int tempLastClickedButtonId = lastClickedButtonId;
+                        final int tempCurrentClickedButtonId = currentClickedButtonId;
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.e("delayHandler", "delayHandler has been called. tempLastClickedButtonId="+tempLastClickedButtonId+"; tempCurrentClickedButtonId"+tempCurrentClickedButtonId);
+                                Buttons.get(tempLastClickedButtonId).setText("?");
+                                Buttons.get(tempCurrentClickedButtonId).setText("?");
+                            }
+                        }, 500);
+
+                        lastClickedButtonId = -1;
+                    } else {
+                        hasBeenClicked[currentClickedButtonId] = true;
+                        hasBeenClicked[lastClickedButtonId] = true;
+                        Buttons.get(currentClickedButtonId).setBackgroundResource(R.drawable.solved_card_back);
+                        Buttons.get(lastClickedButtonId).setBackgroundResource(R.drawable.solved_card_back);
+
+                        lastClickedButtonId = -1;
+                    }
+                }
+            } else {
+                lastClickedButtonId = currentClickedButtonId;
+            }
+
+
         }
     }
 }

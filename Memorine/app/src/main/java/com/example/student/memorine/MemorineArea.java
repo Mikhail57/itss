@@ -11,6 +11,7 @@ public class MemorineArea {
     int cols, rows;
     int[] gridForGame;
     Context mContext;
+    ButtonAdapter adapter;
 
     public MemorineArea(Context mContext, GridView area) {
         this.area = area;
@@ -28,11 +29,10 @@ public class MemorineArea {
 
     public void startGame() {
         generateArray();
-        ButtonAdapter adapter = new ButtonAdapter(mContext, rows, cols);
+        adapter = new ButtonAdapter(mContext, rows, cols);
         adapter.setButtonsHideText(gridForGame);
         area.setAdapter(adapter);
     }
-
 
 
     private void generateArray() {
@@ -56,5 +56,9 @@ public class MemorineArea {
             }
         }
         return false;
+    }
+
+    public void reset() {
+        startGame();
     }
 }
