@@ -97,7 +97,6 @@ public class ButtonAdapter extends BaseAdapter {
             btn = (Button) convertView;
         }
 
-//        Log.e("Lololo", "position="+position+"; length="+buttons.length);
         btn.setText(buttons[position]);
         btn.setTextColor(Color.WHITE);
         btn.setBackgroundResource(R.drawable.card_back);
@@ -107,9 +106,6 @@ public class ButtonAdapter extends BaseAdapter {
             btn.setText(Integer.toString(hideTextArray[btn.getId()]));
         }
 
-        /*if (position<Buttons.size()) {
-            return Buttons.get(position);
-        }*/
         return btn;
     }
 
@@ -122,7 +118,7 @@ public class ButtonAdapter extends BaseAdapter {
         public void onClick(View v)
         {
             currentClickedButtonId = v.getId();
-            Log.e("onClick", "Method has been called. lastClickedButton"+lastClickedButtonId+"; currentClickedButton="+currentClickedButtonId);
+            Log.e("onClick", "Method has been called. lastClickedButton" + lastClickedButtonId + "; currentClickedButton=" + currentClickedButtonId);
 
             Buttons.get(currentClickedButtonId).setText(Integer.toString(hideTextArray[currentClickedButtonId]));
 
@@ -133,12 +129,20 @@ public class ButtonAdapter extends BaseAdapter {
                         Handler handler = new Handler();
                         final int tempLastClickedButtonId = lastClickedButtonId;
                         final int tempCurrentClickedButtonId = currentClickedButtonId;
+                        for (int i=0; i<Buttons.size(); i++) {
+                            Buttons.get(i).setClickable(false);
+                        }
+
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                Log.e("delayHandler", "delayHandler has been called. tempLastClickedButtonId="+tempLastClickedButtonId+"; tempCurrentClickedButtonId"+tempCurrentClickedButtonId);
+                                Log.i("delayHandler", "delayHandler has been called. tempLastClickedButtonId="+tempLastClickedButtonId+"; tempCurrentClickedButtonId"+tempCurrentClickedButtonId);
                                 Buttons.get(tempLastClickedButtonId).setText("?");
                                 Buttons.get(tempCurrentClickedButtonId).setText("?");
+                                for (int i=0; i<Buttons.size(); i++) {
+                                    Buttons.get(i).setClickable(true);
+                                }
+
                             }
                         }, 500);
 
@@ -148,6 +152,8 @@ public class ButtonAdapter extends BaseAdapter {
                         hasBeenClicked[lastClickedButtonId] = true;
                         Buttons.get(currentClickedButtonId).setBackgroundResource(R.drawable.solved_card_back);
                         Buttons.get(lastClickedButtonId).setBackgroundResource(R.drawable.solved_card_back);
+                        buttons[currentClickedButtonId] = Integer.toString(hideTextArray[currentClickedButtonId]);
+                        buttons[lastClickedButtonId] = Integer.toString(hideTextArray[lastClickedButtonId]);
 
                         lastClickedButtonId = -1;
                     }

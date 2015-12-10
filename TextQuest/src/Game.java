@@ -58,9 +58,17 @@ public class Game {
         }
 
         player.setSchool(userChoose);
-
         System.out.println("Our congratulations!!! You have chosen school!");
+        return 0;
+    }
+
+    private int secondLevel() {
+        System.out.println("There are first day in school.");
+        System.out.println("You ashamed and would to became famous. What will you do?");
+        System.out.println("1) Pull Amy's braid");
+        System.out.println("2) Name your teacher ");
 
         return 0;
     }
+
 }

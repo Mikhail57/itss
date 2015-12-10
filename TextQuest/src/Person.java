@@ -6,6 +6,7 @@ public class Person {
     private int Intelligent;
     private int Luck;
     private int School;
+    private int Health;
 
     public Person() {
         initWithRandomValue();
@@ -16,6 +17,7 @@ public class Person {
         Intelligent = (int)(Math.random()*100);
         Luck = (int)(Math.random()*100);
         School = -1;
+        Health = 100;
     }
 
 
@@ -35,6 +37,10 @@ public class Person {
         School = school;
     }
 
+    public void setHealth(int health) {
+        Health = health;
+    }
+
     public int getForce(){
         return Force;
     }
@@ -49,6 +55,10 @@ public class Person {
 
     public int getSchool() {
         return School;
+    }
+
+    public int getHealth() {
+        return Health;
     }
 
     public String toString() {
